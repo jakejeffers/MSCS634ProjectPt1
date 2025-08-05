@@ -161,3 +161,56 @@ In future work, I would like to:
 The dataset is not included in this repository due to file size restrictions. You can download the same version I used from:
 
 **https://cumber-my.sharepoint.com/:x:/g/personal/jake_jeffers_ucumberlands_edu/EUOW6cDh4H5HhGnOB0nxkqMB7S5fa-XKwafkmZADM0-WfQ?e=iNyyi2**
+# MSCS 634 – Deliverable 3: Classification, Clustering, and Pattern Mining  
+Author: Jacob Jeffers
+
+## Project Overview
+
+This final deliverable applies classification, clustering, and association rule mining techniques to the OpenPowerlifting dataset. My goal was to identify patterns in powerlifting performance, predict high-performing lifters, and group lifters by similar characteristics. Since I’ve been interested in strength sports personally, it was rewarding to apply machine learning tools to data I care about.
+
+## Classification
+
+I used a Decision Tree and K-Nearest Neighbors (KNN) to predict whether a lifter is a high performer (defined as having a `TotalKg` over 500).
+
+### Model Performance:
+
+| Model | Accuracy | Precision | Recall | F1 Score |
+|-------|----------|-----------|--------|----------|
+| Decision Tree | 1.00 | 1.00 | 1.00 | 1.00 |
+| KNN (k=5) | 1.00 | 1.00 | 1.00 | 1.00 |
+
+Hyperparameter tuning with GridSearchCV showed that a `max_depth` of 10 gave the best cross-validated score for the Decision Tree (score = 0.997).
+
+## Clustering
+
+I used KMeans clustering on standardized lift data. I reduced the features to two components using PCA so the clusters could be visualized. The output showed three distinct clusters, which appear to reflect meaningful divisions in lifter strength or competitive tiers.
+
+This kind of clustering could be useful for automatically grouping lifters based on overall profile instead of just weight classes.
+
+## Association Rule Mining
+
+Using the Apriori algorithm, I identified several high-confidence, high-lift rules connecting lift milestones (like a 200kg squat or a 150kg bench) with overall performance above 600kg.
+
+### Example Rules:
+- If `DeadliftHigh`, then likely `SquatHigh` (confidence = 0.96, lift = 2.97)
+- If `BenchHigh` and `SquatHigh`, then likely `TotalHigh` (confidence = 0.95, lift = 4.13)
+- If `BenchHigh`, `DeadliftHigh`, and `SquatHigh`, then `TotalHigh` (confidence = 1.00, lift = 4.33)
+
+These patterns could help inform training focus, especially when preparing for higher totals.
+
+## Challenges
+
+- I had to be careful about dropping missing values, especially when using KNN and KMeans, which don't handle NaNs.
+- Some feature engineering was required to convert lift amounts into binary flags for pattern mining.
+- Visualizing cluster results took trial and error with PCA and scaling.
+
+## Final Thoughts
+
+This project helped me bring together everything I learned in the course. I applied multiple machine learning techniques to real, messy, and interesting data. It was satisfying to not only get strong predictive results but also uncover patterns that could be useful to lifters and coaches.
+
+## Files Included
+
+- `deliverable3.ipynb`: Full code for classification, clustering, and association rule mining
+- `README.md`: Summary and insights
+- Dataset not included due to file size — download it from:  
+  https://openpowerlifting.gitlab.io/opl-csv/files/openpowerlifting-2021-06-26-027dc895.csv
